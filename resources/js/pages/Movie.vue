@@ -5,7 +5,6 @@
                 <div class="flex flex-col items-center gap-x-8 rounded-md bg-slate-800 p-3 md:flex-row md:flex-wrap">
                     <div class="w-full flex flex-col flex-wrap items-center gap-y-2 md:flex-row  md:justify-between">
                         <p class="text-xl font-semibold">{{ movie.title }} / {{ movie.reviews_count }} Reviews</p>
-                        <button type="button" class="ml-auto mr-2 shrink-0 rounded-full bg-gradient-to-br from-sky-500 to-cyan-400 px-3 py-1 text-sm font-medium hover:from-sky-700 hover:to-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600/50">Add Review</button>
                         <p class="mt-3 text-gray-400 w-full">{{ movie.tagline }}</p>
                     </div>
                     <div class="w-full mt-4 mb-4">
@@ -22,9 +21,29 @@
                     </div>
                 </div>
             </div>
+            <div class="flex flex-col gap-6 mt-5">
+                <label class="block" for="review">
+                    <span>Review</span>
+                    <textarea id="review" name="review" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-black" rows="3" spellcheck="true"></textarea>
+                </label>
+                <label class="block" for="rating">
+                    <span>Rating</span>
+                    <select name="rating" id="rating" class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-black">
+                        <option value="1">1 star</option>
+                        <option value="2">2 star</option>
+                        <option value="3">3 star</option>
+                        <option value="4">4 star</option>
+                        <option value="5">5 star</option>
+                    </select>
+                </label>
+                <button type="button" class="ml-auto mr-2 shrink-0 rounded-full bg-gradient-to-br from-sky-500 to-cyan-400 px-3 py-1 text-sm font-medium hover:from-sky-700 hover:to-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600/50">Add Review</button>
+            </div>
         </div>
     </div>
+
+    
 </template>
+
 
 <script setup>
 
