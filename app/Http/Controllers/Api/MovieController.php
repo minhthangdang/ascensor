@@ -23,7 +23,6 @@ class MovieController extends Controller
      */
     public function show(string $id)
     {
-
         $movie = Movie::where('id', $id)->with('reviews')->withCount('reviews')->first();
         return response()->json(['movie' => $movie], 200);
     }
