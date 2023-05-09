@@ -43,7 +43,7 @@ class MovieController extends Controller
      */
     public function recent()
     {
-        $movies = Movie::orderBy('created_at', 'desc')->limit(5)->get();
+        $movies = Movie::orderBy('created_at', 'desc')->with('reviews')->withCount('reviews')->limit(5)->get();
         return response()->json(['movies' => $movies], 200);
     }
 }

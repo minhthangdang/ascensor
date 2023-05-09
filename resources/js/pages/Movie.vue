@@ -4,7 +4,7 @@
             <div class="flex flex-col gap-6">
                 <div class="flex flex-col items-center gap-x-8 rounded-md bg-slate-800 p-3 md:flex-row md:flex-wrap">
                     <div class="w-full flex flex-col flex-wrap items-center gap-y-2 md:flex-row  md:justify-between">
-                        <p class="text-xl font-semibold">{{ movie.title }} / {{ movie.reviews_count }} Reviews</p>
+                        <p class="text-xl font-semibold">{{ movie.title }} / {{ movie.reviews_count }} Reviews <span v-if="averageRating>0">/ {{averageRating}} Star</span></p>
                         <p class="mt-3 text-gray-400 w-full">{{ movie.tagline }}</p>
                     </div>
                     <div class="w-full mt-4 mb-4">
@@ -70,6 +70,7 @@ let review = ref('');
 let errors = ref([]);
 let rating = ref(3);
 let successMessage = ref('');
+let averageRating = ref(0);
 
 onMounted(() => {
     const id = route.params.id;
@@ -79,6 +80,7 @@ onMounted(() => {
 const getMovie = async (movieId) => {
     const { data } = await axios.get(`/api/movies/${movieId}`);
     movie.value = data.movie;
+    calculateAverageRating();
 }
 
 const submit = async() => {
@@ -105,7 +107,9 @@ const submit = async() => {
         });
 
         if (response.data == true) {
+            movie.value.reviews_count += 1;
             movie.value.reviews.push({review: review.value, rating: rating.value});
+            calculateAverageRating();
             successMessage.value = 'Your review has been submitted successfully.';
         } else {
             errors.value.push('A server error has occurred. Please try again later.');
@@ -115,5 +119,10 @@ const submit = async() => {
         review.value = '';
         rating.value = 3;
     }
+}
+
+const calculateAverageRating = () => {
+    const totalRatings = movie.value.reviews.reduce((acc, { rating }) => acc += Number(rating), 0)
+    averageRating = (totalRatings / movie.value.reviews_count).toFixed(2);
 }
 </script>
