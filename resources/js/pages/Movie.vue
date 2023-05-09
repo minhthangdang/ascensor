@@ -14,7 +14,7 @@
                     <div class="hover:text-cyan-400 text-xl font-semibold border-b border-cyan-400 pb-2 mb-4">
                         Reviews
                     </div>
-                    <div class="p-3 w-full mt-4 bg-slate-700" v-for="review in movie.reviews">
+                    <div class="p-3 w-full mt-4 bg-slate-700" v-for="review in movie.reviews" v-bind:key="review">
                         <div class="text-gray-200">
                             {{ review.review }}
                         </div>
@@ -22,6 +22,12 @@
                 </div>
             </div>
             <div class="flex flex-col gap-6 mt-5">
+                <p class="bg-red-100 border border-red-400 text-red-700" v-if="errors.length">
+                    <b>Please correct the following error(s):</b>
+                    <ul>
+                        <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+                    </ul>
+                </p>
                 <label class="block" for="review">
                     <span>Review</span>
                     <textarea v-model="review" required id="review" name="review" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-black" rows="3" spellcheck="true"></textarea>
@@ -69,18 +75,30 @@ export default {
     data() {
         return {
             review: '',
-            rating: 3
+            rating: 3,
+            errors: []
         }
     },
 
     methods: {
         async submit() {
-            //TODO: client's side validation required here
-            let movieId = this.$route.params.id;
-            const isSuccess = await axios.post(`/api/reviews/${movieId}`, {
-                review: this.review,
-                rating: this.rating
-            });
+            let hasErrors = false;
+            if (!this.review) {
+                this.errors.push('Review required.');
+                hasErrors = true;
+            }
+            if (!this.rating) {
+                this.errors.push('Rating required.');
+                hasErrors = true;
+            }
+
+            if (!hasErrors) {
+                let movieId = this.$route.params.id;
+                const isSuccess = await axios.post(`/api/reviews/${movieId}`, {
+                    review: this.review,
+                    rating: this.rating
+                });
+            }
         }
     }
 }
