@@ -30,10 +30,12 @@
                 <div class="flex flex-col items-center gap-x-8 rounded-md bg-slate-800 p-3 md:flex-row md:flex-wrap" v-for="review in recentReviews" :key="review.id">
                     <div class="w-full flex flex-col items-center gap-y-2 md:flex-row  md:justify-between">
                         <router-link class="hover:text-cyan-400" :to="{name: 'Movie', params: {id: review.movie_id}}">
-                            <div class="text-xl font-semibold">Film Review 1</div>
+                            <div class="text-xl font-semibold">{{ review.movie.title }} Review</div>
                         </router-link>
                         <div class="ml-auto">
-                            <a href="" class="text-xl font-semibold">{{ review.rating }} Stars</a>
+                            <router-link class="hover:text-cyan-400" :to="{name: 'Movie', params: {id: review.movie_id}}">
+                                <div class="text-xl font-semibold">{{ review.rating }} Stars</div>
+                            </router-link>
                         </div>
                     </div>
                     <p class="mt-3 text-gray-400">{{ review.review }}</p>
