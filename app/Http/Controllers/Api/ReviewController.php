@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Review;
+use App\Http\Helpers;
 
 class ReviewController extends Controller
 {
@@ -33,28 +34,12 @@ class ReviewController extends Controller
         $review = $request->post('review');
         $rating = intval($request->post('rating'));
 
-        if ($this->isReviewValid($review, $rating)) {
+        if (Helpers::isReviewValid($review, $rating)) {
             $reviewModel = new Review;
             $reviewModel->review = $review;
             $reviewModel->rating = $rating;
             $reviewModel->movie_id = $movieId;
             $reviewModel->save();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Check if a submitted review is valid
-     * 
-     * @param string $review the review text
-     * @param int $rating the rating value (one to five)
-     * @return bool true if the review is valid
-     */
-    protected function isReviewValid(string $review, int $rating) : bool
-    {
-        if (!empty($review) && !empty($rating)) {
             return true;
         } else {
             return false;
