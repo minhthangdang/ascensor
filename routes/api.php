@@ -26,7 +26,7 @@ use App\Http\Controllers\Api\UserController;
 
 Route::post('/login', [UserController::class, 'login']);
 
-/*Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:sanctum')->group(function(){
 
     //View all movies, and view a single movie
     Route::get('/movies', [MovieController::class, 'index']);
@@ -36,22 +36,9 @@ Route::post('/login', [UserController::class, 'login']);
 
     //View all reviews (owned only), edit a reviews (owned only), delete a reviews (owned only)
     Route::get('/reviews/:movieId', [ReviewController::class, 'index']);
-    Route::post('/reviews', [ReviewController::class, 'store']);
+    Route::post('/reviews/{id}', [ReviewController::class, 'store']);
     Route::patch('/reviews/:id', [ReviewController::class, 'update']);
     Route::delete('/reviews/:id', [ReviewController::class, 'destroy']);
     Route::get('/reviews/recent', [ReviewController::class, 'recent']);
     
-});*/
-
-//View all movies, and view a single movie
-Route::get('/movies', [MovieController::class, 'index']);
-Route::post('/movies/search', [MovieController::class, 'search']);
-Route::get('/movies/recent', [MovieController::class, 'recent']);
-Route::get('/movies/{id}', [MovieController::class, 'show']);
-
-//View all reviews (owned only), edit a reviews (owned only), delete a reviews (owned only)
-Route::get('/reviews/:movieId', [ReviewController::class, 'index']);
-Route::post('/reviews/{id}', [ReviewController::class, 'store']);
-Route::patch('/reviews/:id', [ReviewController::class, 'update']);
-Route::delete('/reviews/:id', [ReviewController::class, 'destroy']);
-Route::get('/reviews/recent', [ReviewController::class, 'recent']);
+});
