@@ -52,7 +52,7 @@ class ReviewController extends Controller
      * @param int $rating the rating value (one to five)
      * @return bool true if the review is valid
      */
-    protected function isReviewValid(string $review, int $rating)
+    protected function isReviewValid(string $review, int $rating) : bool
     {
         if (!empty($review) && !empty($rating)) {
             return true;

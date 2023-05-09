@@ -14,7 +14,12 @@
                     <div class="hover:text-cyan-400 text-xl font-semibold border-b border-cyan-400 pb-2 mb-4">
                         Reviews
                     </div>
-                    <div class="p-3 w-full mt-4 bg-slate-700" v-for="review in movie.reviews" v-bind:key="review">
+                    <div class="p-3 w-full mt-4 bg-slate-700" v-for="review in movie.reviews">
+                        <div v-if="review.rating == 1">*</div>
+                        <div v-if="review.rating == 2">* *</div>
+                        <div v-if="review.rating == 3">* * *</div>
+                        <div v-if="review.rating == 4">* * * *</div>
+                        <div v-if="review.rating == 5">* * * * *</div>
                         <div class="text-gray-200">
                             {{ review.review }}
                         </div>
@@ -23,10 +28,13 @@
             </div>
             <div class="flex flex-col gap-6 mt-5">
                 <p class="bg-red-100 border border-red-400 text-red-700" v-if="errors.length">
-                    <b>Please correct the following error(s):</b>
+                    <b>Error(s):</b>
                     <ul>
-                        <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+                        <li v-for="error in errors">{{ error }}</li>
                     </ul>
+                </p>
+                <p class="bg-green-100 border border-green-400 text-green-700" v-if="successMessage.length">
+                    <b class="p-2">{{successMessage}}</b>
                 </p>
                 <label class="block" for="review">
                     <span>Review</span>
@@ -58,6 +66,10 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const movie = ref({});
+let review = ref('');
+let errors = ref([]);
+let rating = ref(3);
+let successMessage = ref('');
 
 onMounted(() => {
     const id = route.params.id;
@@ -66,40 +78,42 @@ onMounted(() => {
 
 const getMovie = async (movieId) => {
     const { data } = await axios.get(`/api/movies/${movieId}`);
-    movie.value = data.movie
+    movie.value = data.movie;
 }
-</script>
 
-<script>
-export default {
-    data() {
-        return {
-            review: '',
-            rating: 3,
-            errors: []
+const submit = async() => {
+    // data validation
+    successMessage.value = '';
+    errors.value = [];
+    let hasErrors = false;
+    if (!review.value) {
+        errors.value.push('Review required.');
+        hasErrors = true;
+    }
+    if (!rating.value) {
+        errors.value.push('Rating required.');
+        hasErrors = true;
+    }
+
+    if (!hasErrors) {
+        errors.value = []; // reset validation errors
+
+        let movieId = route.params.id;
+        const response = await axios.post(`/api/reviews/${movieId}`, {
+            review: review.value,
+            rating: rating.value
+        });
+
+        if (response.data == true) {
+            movie.value.reviews.push({review: review.value, rating: rating.value});
+            successMessage.value = 'Your review has been submitted successfully.';
+        } else {
+            errors.value.push('A server error has occurred. Please try again later.');
         }
-    },
 
-    methods: {
-        async submit() {
-            let hasErrors = false;
-            if (!this.review) {
-                this.errors.push('Review required.');
-                hasErrors = true;
-            }
-            if (!this.rating) {
-                this.errors.push('Rating required.');
-                hasErrors = true;
-            }
-
-            if (!hasErrors) {
-                let movieId = this.$route.params.id;
-                const isSuccess = await axios.post(`/api/reviews/${movieId}`, {
-                    review: this.review,
-                    rating: this.rating
-                });
-            }
-        }
+        // reset to default values
+        review.value = '';
+        rating.value = 3;
     }
 }
 </script>
