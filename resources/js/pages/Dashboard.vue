@@ -59,13 +59,4 @@ onMounted(async () => {
     recentReviews.value = reviewsResponse.data.reviews;
 });
 
-const averageRating = (movie) => {
-    if (movie.reviews_count > 0) {
-        const totalRatings = movie.reviews.reduce((acc, { rating }) => acc += Number(rating), 0)
-        return (totalRatings / movie.reviews_count).toFixed(2) + ' Star';
-    } else {
-        return 'No rating yet';
-    }
-    
-}
 </script>

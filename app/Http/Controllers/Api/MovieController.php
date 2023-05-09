@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Movie;
@@ -32,10 +31,9 @@ class MovieController extends Controller
      */
     public function search(Request $request)
     {
-        $searchQuery = "SELECT * FROM movies WHERE movies.title LIKE '%" . $request->input('searchParam') . "%' LIMIT 100;";
-
-        $results = DB::select($searchQuery);
-        return $results;
+        $movies = Movie::where('title', 'LIKE', '%'.$request->input('searchParam').'%')
+                        ->with('reviews')->withCount('reviews')->limit(100)->get();
+        return $movies;
     }
 
     /**
