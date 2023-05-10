@@ -31,8 +31,10 @@ class MovieController extends Controller
      */
     public function search(Request $request)
     {
-        $movies = Movie::where('title', 'LIKE', '%'.$request->input('searchParam').'%')
-                        ->with('reviews')->withCount('reviews')->limit(100)->get();
+        $searchParam    = $request->input('searchParam');
+        $movies = Movie::where('title', 'LIKE', '%'.$searchParam.'%')
+                        ->with('reviews')->withCount('reviews')
+                        ->paginate(5); // 5 results per page
         return $movies;
     }
 
