@@ -9,3 +9,6 @@
 # Paginated search results:
 ![Paginated search results](https://github.com/minhthangdang/minhthangdang.github.io/blob/4ebbf7d3ac61d10811960d83f9f13e7eeee2c8b7/ascensor-paginated-search-results-1.jpg)
 ![Paginated search results](https://github.com/minhthangdang/minhthangdang.github.io/blob/4ebbf7d3ac61d10811960d83f9f13e7eeee2c8b7/ascensor-paginated-search-results-2.jpg)
+# Import movies from CSV:
+![Import movies from CSV](https://github.com/minhthangdang/minhthangdang.github.io/blob/0b4221c3ec0e40c58cb36ff24e853c11ffe5e04c/ascensor-import-movie-1.jpg)
+![Import movies from CSV](https://github.com/minhthangdang/minhthangdang.github.io/blob/0b4221c3ec0e40c58cb36ff24e853c11ffe5e04c/ascensor-import-movie-2.jpg)
