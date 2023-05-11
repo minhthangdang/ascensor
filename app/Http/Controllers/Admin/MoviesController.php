@@ -16,25 +16,21 @@ class MoviesController extends Controller
 
     public function import(Request $request)
     {
-       
+        $csv    = file(public_path('/uploads/movies-trimmed.csv'));
+        $chunks = array_chunk($csv, 1000);
+        $header = [];
+        $batch = Bus::batch([])->dispatch();
 
-            $csv = fopen(public_path('/uploads/movies-trimmed.csv'),'r');
-            $csv = fgetcsv($csv);
-            $chunks = array_chunk($csv, 1000);
-            $header = [];
-            $batch = Bus::batch([])->dispatch();
-
-            foreach($chunks as $key => $chunk) {
-                $data = array_map('str_getcsv', $chunk);
-                if($key === 0) {
-                    $header = $data[0];
-                    unset($data[0]);
-                }
-                $batch->add(new MovieCSVUploadJob($data, $header));
+        foreach($chunks as $key => $chunk) {
+            $data = array_map('str_getcsv', $chunk);
+            if($key === 0) {
+                $header = $data[0];
+                unset($data[0]);
             }
-            return $batch;
+            $batch->add(new MovieCSVUploadJob($data, $header));
+        }
         
-        
+        return 'The CSV file is being processed ...';
     }
 
 }

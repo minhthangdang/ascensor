@@ -21,9 +21,8 @@ use App\Http\Controllers\Admin\MoviesController;
 */
 
 Route::prefix('admin')->group(function () {
-
-    Route::get('/', [MoviesController::class, 'index']);
-    
+    Route::get('/movies', [MoviesController::class, 'index']);
+    Route::post('/movies', [MoviesController::class, 'import']);
 });
 
 
